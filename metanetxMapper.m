@@ -4,31 +4,49 @@ function [metData] = metanetxMapper(metInfo, varargin)
 %
 % USAGE:
 %
-%    [metData] = metanetxMapper(metInfo, inputStyle, outputStyle)
+%    [metData] = metanetxMapper(metInfo, varargin)
 %
 % INPUTS:
 %    name:     string name of the metabolite (Common names, VMH names, CHEBI ids,
 %    swiss lipids id, HMDB ids, and lipidmaps are supported)
 %
-%    inputStyle: For inputs in the format of names use 'name' and for
-%    different IDs you can use 'chebi', 'vmh', 'hmdb', 'swisslipids' or
-%    'metanetx'
 %
 % OPTIONAL INPUT:
 %    outputStyle: same as the input, choose an output option between
-%    'name', 'vmh', 'chebi', 'hmdb', 'swisslipids', and 'metanetx'
+%    'name', 'vmh', and 'chebi' for more accurate respond
 %
 % OUTPUT:
-%    metData: Name of ID for metabolite of interest
+%    metData: Information of corrosponding metabolite including: 
+%    Common name, MetaNetX ID, VMH name, CHEBI, HMDB, KEGG, BIGG, and Swiss Lipids IDs 
 %
 % EXAMPLE:
+%     >>  metData = metanetxMapper('SLM:000390086')
+%         metData = 
+% 
+%         struct with fields:
+% 
+%                   name: "O-3-methylbutanoyl-(R)-carnitine"
+%                   metanetx: "MNXM1101229"
+%                   vmh: "ivcrn"
+%                   chebi: "70819"
+%                   hmdb: "HMDB0000688"
+%                   kegg: "C20826"
+%                   bigg: "ivcrn"
+%                   swisslipids: "SLM:000390086"
 %
-%    >>  metanetxID = metanetxMapper('10dacb')
-%        metanetxID =
-%       'MNXM1702'
-%    >>  metanetxID = getMetanetxID('10dacb', 'name')
-%        metanetxID =
-%       '10-deacetylbaccatin III'
+%    >>  metData = metanetxMapper('glu_L', 'VMH')
+%        metData =
+%
+%        struct with fields:
+%
+%                   name: "L-glutamate"
+%                   metanetx: "MNXM1409599"
+%                   vmh: "glu_L"
+%                   chebi: "14321"
+%                   hmdb: "HMDB0000148"
+%                   kegg: "C00025"
+%                   bigg: "glu__L"
+%                   swisslipids: ""
 %
 % NOTE:
 %    In the case of more than one matches for the metabolite, this
@@ -100,8 +118,9 @@ if nameFlag
         if numel(response) > 1
             response = response{1};
         end
-        % Get the second respond using the retrieved metanetx id
-        metInfo = response.desc;
+        % Get the second respond using the retrieved metanetx id and search
+        % that on ID-mapper
+        metInfo = response.mnx_id;
         % For IDs we use id-mapper feature of MetaNetX
         url = 'https://beta.metanetx.org/cgi-bin/mnxweb/id-mapper';
         params = {'query_index', 'chem', 'output_format', 'JSON', 'query_list', metInfo};
