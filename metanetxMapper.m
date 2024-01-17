@@ -100,7 +100,7 @@ else
 end
 
 % Define output as a struct
-metData = struct('name', "", 'metanetx', "", 'vmh', "", 'chebi', "", 'hmdb', "", 'kegg', "", 'bigg', "", 'swisslipids', "");
+metData = struct('metName', "", 'metMetaNetXID', "", 'metVMHID', "", 'metCheBIID', "", 'metHMDBID', "", 'metKEGGID', "", 'metBiGGID', "", 'metSwissLipidsID', "");
 
 % Make the request using webread and respond an empty response to empty
 % names
@@ -139,8 +139,8 @@ if ~isempty(response)
     if ~isempty(fieldnames(response))
 
         % Assign metanetx and name
-        metData.metanetx = string(response.mnx_id);
-        metData.name = string(response.name);
+        metData.metMetaNetXID = string(response.mnx_id);
+        metData.metName = string(response.name);
 
         ref = response.xrefs;
 
@@ -151,7 +151,7 @@ if ~isempty(response)
             chebi = ref(chebiID(1));
             chebi = string(chebi);
             chebi = strsplit(chebi, ':');
-            metData.chebi = string(chebi{2});
+            metData.metCheBIID = string(chebi{2});
         end
 
         % Assign hmdb ID
@@ -161,7 +161,7 @@ if ~isempty(response)
             hmdb = ref(hmdbID(1));
             hmdb = string(hmdb);
             hmdb = strsplit(hmdb, ':');
-            metData.hmdb = string(hmdb{2});
+            metData.metHMDBID = string(hmdb{2});
         end
 
         % Assign vmh ID
@@ -171,7 +171,7 @@ if ~isempty(response)
             vmh = ref(vmhID(1));
             vmh = string(vmh);
             vmh = strsplit(vmh, ':');
-            metData.vmh = string(vmh{2});
+            metData.metVMHID = string(vmh{2});
         end
 
         % Assign swisslipids ID
@@ -180,7 +180,7 @@ if ~isempty(response)
             % First ID is the real ID others might be similar mets
             slm = ref(slmID(1));
             slm = string(slm);
-            metData.swisslipids = slm;
+            metData.metSwissLipidsID = slm;
         end
 
         % Assign KEGG ID
@@ -190,7 +190,7 @@ if ~isempty(response)
             kegg = ref(keggID(1));
             kegg = string(kegg);
             kegg = strsplit(kegg, ':');
-            metData.kegg = string(kegg{2});
+            metData.metKEGGID = string(kegg{2});
         end
 
         % Assign BIGG ID
@@ -200,7 +200,7 @@ if ~isempty(response)
             bigg = ref(biggID(1));
             bigg = string(bigg);
             bigg = strsplit(bigg, ':');
-            metData.bigg = string(bigg{2});
+            metData.metBiGGID = string(bigg{2});
         end
     end
 end
